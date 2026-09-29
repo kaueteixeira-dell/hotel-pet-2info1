@@ -1,6 +1,6 @@
 # Estudo: funções assíncronas
 
-## O que é uma função assíncrona? Por que buscar dados é assíncrono?
+## O que é uma função assíncrona? 
 
 É uma função que pode aguardar uma operação sem bloquear a página. Buscar dados depende do tempo de resposta da rede e do servidor, que pode variar.
 
@@ -8,7 +8,7 @@
 
 Uma `Promise` representa o resultado futuro de uma operação. Seus estados são **pending** (aguardando), **fulfilled** (concluída com sucesso) e **rejected** (concluída com erro).
 
-## Para que servem `async` e `await`? O que acontece durante a espera?
+## Para que servem `async` e `await`? 
 
 `async` declara uma função assíncrona e faz com que ela retorne uma `Promise`. `await` aguarda essa Promise: a função fica suspensa naquele ponto, mas a página continua funcionando. Depois, a função retoma a execução.
 
