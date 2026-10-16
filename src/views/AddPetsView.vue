@@ -1,125 +1,139 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 
-const API_URL = 'http://localhost:3000';
+const novoPet = ref({
+  nome: '',
+  especie: '',
+  tutorId: '',
+});
+
 const router = useRouter();
 
-const tutores = ref([]);
-const nome = ref('');
-const especie = ref('');
-const tutorId = ref('');
-const loadingTutores = ref(true);
-const salvando = ref(false);
-const erro = ref('');
+// aqui estou declarando a API que vai retornar a listagem de todos os pets
+// será reponsavel por cadastrar novos pets
+
+const API_URL = 'http://localhost:3000';
+
+const tutores = ref({});
 
 async function carregarTutores() {
-  try {
-    const resposta = await fetch(`${API_URL}/tutores`);
-    if (!resposta.ok) {
-      throw new Error('Não foi possível carregar a lista de tutores.');
-    }
-
-    tutores.value = await resposta.json();
-  } catch (error) {
-    erro.value = error instanceof Error ? error.message : 'Ocorreu um erro ao carregar os tutores.';
-  } finally {
-    loadingTutores.value = false;
-  }
+  const resposta = await fetch(`${API_URL}/tutores`);
+  console.log('load tutores', tutores);
+  tutores.value = await resposta.json();
 }
 
 async function salvarPet() {
-  erro.value = '';
-  salvando.value = true;
-
-  try {
-    const resposta = await fetch(`${API_URL}/pets`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        nome: nome.value.trim(),
-        especie: especie.value.trim(),
-        tutorId: tutorId.value,
-      }),
-    });
-
-    if (!resposta.ok) {
-      throw new Error('Não foi possível salvar o pet. Tente novamente.');
-    }
-
-    await router.push({ name: 'pets' });
-  } catch (error) {
-    erro.value = error instanceof Error ? error.message : 'Ocorreu um erro ao salvar o pet.';
-  } finally {
-    salvando.value = false;
-  }
+  await fetch(`${API_URL}/pets`, {
+    method: 'POST',
+    header: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(novoPet.value),
+  });
+  router.push('/pets');
 }
 
 onMounted(carregarTutores);
 </script>
 
 <template>
-  <section class="container-fluid px-0">
+  <div>
     <header class="mb-4">
-      <h1 class="h2 fw-bold mb-0">Cadastrar pet</h1>
+      <h1 class="text-2xl font-bold">Listagem de Pets</h1>
+      <p class="text-body-secondary mb-0">Cadastro de Pets no sistema.</p>
     </header>
 
-    <p v-if="loadingTutores" role="status">Carregando tutores...</p>
-    <div v-else-if="erro && tutores.length === 0" class="alert alert-danger" role="alert">
-      {{ erro }}
+    <RouterLink
+      class="btn btn-primary"
+      :to="{ name: 'addPet' }"
+    >
+      Adicionar Pet
+    </RouterLink>
+
+    <p v-if="carregandoTutores">Carregando Tutores ...</p>
+    <div v-else>
+      <p
+        v-if="erro"
+        class="alert alert-danger"
+        role="alert"
+      >
+        {{ erro }}
+      </p>
     </div>
 
-    <form v-else class="row g-4" @submit.prevent="salvarPet">
-      <div class="col-lg-7">
-        <label for="nome-pet" class="form-label fw-semibold">Nome do pet</label>
+    <form @submit.prevent="salvarPet">
+      <div class="col-md-6">
+        <label
+          for="nome"
+          class="form-label"
+        >
+          Nome do Pet
+        </label>
+
         <input
-          id="nome-pet"
-          v-model="nome"
+          type="text"
+          id="nome"
+          v-model="novoPet.nome"
           class="form-control"
-          name="nome"
-          autocomplete="off"
           required
         />
       </div>
 
-      <div class="col-lg-4">
-        <label for="tutor-pet" class="form-label fw-semibold">Tutor</label>
+      <div class="col-md-6">
+        <label
+          for="nome"
+          class="form-label"
+        >
+          Espécie
+        </label>
+
         <select
-          id="tutor-pet"
-          v-model="tutorId"
+          id="especie"
+          v-model="novoPet.especie"
           class="form-select"
-          name="tutorId"
           required
         >
-          <option value="" disabled>Selecione um tutor</option>
-          <option v-for="tutor in tutores" :key="tutor.id" :value="tutor.id">
+          <option
+            value=""
+            disabled
+          >
+            Selecione a Espécie
+          </option>
+          <option value="Cachorro">Cachorro</option>
+          <option value="Gato">Gato</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label
+          for="tutor"
+          class="form-label"
+        >
+          Tutor
+        </label>
+
+        <select
+          id="tutor"
+          v-model="novoPet.tutorId"
+          class="form-select"
+          required
+        >
+          <option
+            value=""
+            disabled
+          >
+            Selecione um Tutor
+          </option>
+          <option
+            v-for="tutor in tutores"
+            :key="tutor.id"
+            :value="tutor.id"
+          >
             {{ tutor.nome }}
           </option>
         </select>
       </div>
-
-      <div class="col-lg-7">
-        <label for="especie-pet" class="form-label fw-semibold">Espécie</label>
-        <input
-          id="especie-pet"
-          v-model="especie"
-          class="form-control"
-          name="especie"
-          placeholder="Ex.: Cachorro"
-          required
-        />
-      </div>
-
-      <div v-if="erro" class="col-12">
-        <div class="alert alert-danger mb-0" role="alert">{{ erro }}</div>
-      </div>
-
-      <div class="col-12 d-flex justify-content-end">
-        <button class="btn btn-success" type="submit" :disabled="salvando || tutores.length === 0">
-          <span v-if="salvando" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-          {{ salvando ? 'Salvando...' : 'Salvar pet' }}
-        </button>
-      </div>
     </form>
-  </section>
+  </div>
 </template>

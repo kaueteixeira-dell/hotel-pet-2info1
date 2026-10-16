@@ -39,12 +39,26 @@ import { RouterLink } from 'vue-router';
           <RouterLink
             class="nav-link"
             to="/pets"
-            >Pets</RouterLink
+            >Pets
+            </RouterLink
           >
           <RouterLink
             class="nav-link"
             to="/pets/novo"
-            >Novo pet</RouterLink
+            >Novo pet
+            </RouterLink
+          >
+           <RouterLink
+            class="nav-link"
+            to="/tutores"
+            >Tutores
+            </RouterLink
+          >
+           <RouterLink
+            class="nav-link"
+            to="/tutore12s/novo"
+            >Novo tutor
+            </RouterLink
           >
         </div>
       </div>

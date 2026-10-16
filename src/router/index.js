@@ -19,9 +19,19 @@ const router = createRouter({
     },
     {
       path: '/pets/:id',
-      name: 'petDetail',
-      component: () => import('../views/PetDetailView.vue'),
+      name: 'detalhes-pet',
+      component: () => import('../views/PetsDetailsView.vue'),
     },
+        {
+      path: '/tutores',
+      name: 'tutores',
+      component: () => import('../views/TutoresView.vue'),
+    },
+        {
+      path: '/tutores/novo',
+      name: 'addTutor',
+      component: () => import('../views/AddTutorView.vue'),
+    }
   ],
 });
 

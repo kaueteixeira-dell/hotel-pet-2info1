@@ -14,33 +14,13 @@
       "id": "3",
       "nome": "Ana",
       "telefone": "479999100100"
+    },
+    {
+      "nome": "Kaue",
+      "telefone": "(47) 99763-0824",
+      "id": "xWpwtLZVTn8"
     }
   ],
-  "pets": [
-    {
-      "id": "1",
-      "nome": "Safira",
-      "especie": "Cachorro",
-      "tutorId": "1"
-    },
-    {
-      "id": "2",
-      "nome": "Melado",
-      "especie": "Cachorro",
-      "tutorId": "2"
-    },
-    {
-      "id": "3",
-      "nome": "Pandora",
-      "especie": "Gato",
-      "tutorId": "3"
-    },
-    {
-      "nome": "Batata",
-      "especie": "Cachorro",
-      "tutorId": "1",
-      "id": "Z_Qq-6Wdk9w"
-    }
-  ],
+  "pets": [],
   "$schema": "./node_modules/json-server/schema.json"
 }

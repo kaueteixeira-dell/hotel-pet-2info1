@@ -29,18 +29,31 @@ import { RouterLink } from 'vue-router';
         Novo pet
       </RouterLink>
 
-      <!--
-        <span
-        class="nav-link text-body-secondary"
+      <RouterLink
+        class="nav-link"
         aria-disabled="true"
-        >
+        to="/tutores"
+      >
         <i
-        class="bi bi-people me-2"
-        aria-hidden="true"
+          class="bi bi-people me-2"
+          aria-hidden="true"
         ></i>
-        Tutores <small class="ms-1">(em breve)</small>
-      </span>
-      -->
+        Tutores
+      </RouterLink>
+
+      <RouterLink
+        class="nav-link"
+        active-class="active"
+        to="/tutores/novo"
+      >
+        <i
+          class="bi bi-plus-circle me-2"
+          aria-hidden="true"
+        ></i>
+        Novo tutor
+      </RouterLink>
+
+
     </div>
   </nav>
 </template>
